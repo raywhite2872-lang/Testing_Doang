@@ -20,33 +20,127 @@ body.dark{
   --sub:#aaaaaa;
 }
 
-body{margin:0;font-family:Arial, Helvetica, sans-serif;background:var(--bg);color:var(--text);}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--red);color:white;}
+/* HEADER */
+header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  background:var(--red);
+  color:white;
+}
 header h1{font-size:18px;margin:0;}
-.toggle{margin-left:auto;cursor:pointer;background:white;color:black;padding:6px 10px;border-radius:6px;font-size:12px;}
+.toggle{
+  margin-left:auto;
+  cursor:pointer;
+  background:white;
+  color:black;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:12px;
+}
 
-.player{position:relative;background:black;}
-video{width:100%;max-height:240px;transition:transform .3s ease;}
-video.rotated{transform:rotate(90deg) scale(1.2);}
+/* PLAYER */
+.player{
+  position:relative;
+  width:100%;
+  background:black;
+}
 
-.rotate-btn{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.65);color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;}
+video{
+  width:100%;
+  height:auto;
+  max-height:none;
+  object-fit:contain; /* 🔥 PENTING: VIDEO TIDAK KEPOTONG */
+  background:black;
+}
 
-.progress{height:4px;background:#333;}
-.progress div{height:100%;width:0;background:var(--red);}
+/* FULL BUTTON */
+.rotate-btn{
+  position:absolute;
+  bottom:12px;
+  right:12px;
+  background:rgba(0,0,0,.65);
+  color:white;
+  border:none;
+  padding:6px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
 
+/* PROGRESS */
+.progress{
+  height:4px;
+  background:#333;
+}
+.progress div{
+  height:100%;
+  width:0;
+  background:var(--red);
+}
+
+/* INFO */
 .info{padding:10px 14px;}
 .info h2{margin:0;font-size:16px;}
 .info p{margin:4px 0 0;font-size:12px;color:var(--sub);}
 
-.action-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;}
-.actions button{margin-right:6px;background:var(--card);color:var(--text);border:none;padding:6px 10px;border-radius:6px;cursor:pointer;}
-.subscribe{background:#cc0000;color:white;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;}
+/* ACTION */
+.action-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 14px;
+}
+.actions button{
+  margin-right:6px;
+  background:var(--card);
+  color:var(--text);
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+.subscribe{
+  background:#cc0000;
+  color:white;
+  border:none;
+  padding:6px 14px;
+  border-radius:6px;
+  cursor:pointer;
+}
 
+/* LIST */
 .list{padding:10px;}
-.item{display:flex;gap:10px;margin-bottom:10px;background:var(--card);padding:8px;border-radius:10px;cursor:pointer;}
-.thumb{width:120px;height:70px;background:#000;flex-shrink:0;border-radius:8px;overflow:hidden;}
-.thumb video{width:100%;height:100%;object-fit:cover;}
+.item{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+  background:var(--card);
+  padding:8px;
+  border-radius:10px;
+  cursor:pointer;
+}
+.thumb{
+  width:120px;
+  height:70px;
+  background:#000;
+  border-radius:8px;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.thumb video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  pointer-events:none;
+}
 .meta{display:flex;flex-direction:column;}
 .title{font-size:14px;font-weight:bold;}
 .sub{font-size:12px;color:var(--sub);}
@@ -62,9 +156,14 @@ video.rotated{transform:rotate(90deg) scale(1.2);}
 </header>
 
 <div class="player">
-  <video id="mainVideo" controls playsinline></video>
-  <button class="rotate-btn" onclick="safeRotate()">⟳ Full</button>
+  <video id="mainVideo"
+    controls
+    playsinline
+    preload="auto">
+  </video>
+  <button class="rotate-btn" onclick="goFull()">⛶ Full</button>
 </div>
+
 <div class="progress"><div id="bar"></div></div>
 
 <div class="info">
@@ -83,7 +182,6 @@ video.rotated{transform:rotate(90deg) scale(1.2);}
 <div class="list" id="playlist"></div>
 
 <script>
-// ---------- DATA ----------
 const data = [
  {title:"Video 1",src:"https://files.catbox.moe/fx9id6.mp4"},
  {title:"Video 2",src:"https://files.catbox.moe/kgu284.mp4"},
@@ -92,20 +190,23 @@ const data = [
  {title:"Video 5",src:"https://files.catbox.moe/8y82rp.mp4"}
 ];
 
-// ---------- STATE ----------
 const video = document.getElementById("mainVideo");
 const titleEl = document.getElementById("videoTitle");
 const bar = document.getElementById("bar");
 const list = document.getElementById("playlist");
-let current = 0, likes = 0, rotated = false;
+let current = 0, likes = 0;
 
-// ---------- UI ----------
 function loadList(){
   list.innerHTML = "";
   data.forEach((v,i)=>{
     const el = document.createElement("div");
     el.className = "item" + (i===current?" active":"");
-    el.innerHTML = `<div class='thumb'><video src='${v.src}' muted></video></div><div class='meta'><div class='title'>${v.title}</div><div class='sub'>Recommended</div></div>`;
+    el.innerHTML = `
+      <div class="thumb"><video src="${v.src}" preload="metadata"></video></div>
+      <div class="meta">
+        <div class="title">${v.title}</div>
+        <div class="sub">Recommended</div>
+      </div>`;
     el.onclick = ()=>playVideo(i);
     list.appendChild(el);
   });
@@ -129,35 +230,16 @@ video.onended = ()=>{
   if(current < data.length-1) playVideo(current+1);
 };
 
-// ---------- SAFE FULLSCREEN / ROTATE ----------
-function safeRotate(){
-  try{
-    if(video.requestFullscreen){
-      video.requestFullscreen().catch(()=>fallbackRotate());
-    }else{
-      fallbackRotate();
-    }
-  }catch(e){
-    fallbackRotate();
-  }
+function goFull(){
+  if(video.requestFullscreen) video.requestFullscreen();
+  else if(video.webkitRequestFullscreen) video.webkitRequestFullscreen();
 }
 
-function fallbackRotate(){
-  rotated = !rotated;
-  video.classList.toggle("rotated", rotated);
-}
-
-// ---------- ACTIONS ----------
 function toggleMode(){document.body.classList.toggle("dark");}
 function like(){document.getElementById("likeCount").textContent = ++likes;}
 function share(){navigator.clipboard?.writeText(location.href);alert("Link copied");}
 function sub(){alert("Subscribed 🔔");}
 
-// ---------- BASIC RUNTIME TESTS ----------
-console.assert(data.length === 5, "Playlist harus 5 video");
-console.assert(typeof playVideo === "function", "playVideo harus ada");
-
-// ---------- INIT ----------
 playVideo(0);
 </script>
 
