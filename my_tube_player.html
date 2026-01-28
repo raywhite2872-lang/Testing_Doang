@@ -20,169 +20,109 @@ body.dark{
   --sub:#aaaaaa;
 }
 
-body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+body{margin:0;font-family:Arial;background:var(--bg);color:var(--text);}
 
 header{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px 14px;
-  background:var(--red);
-  color:white;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--red);color:white;
 }
-header h1{font-size:18px;margin:0;}
 .toggle{
-  margin-left:auto;
-  cursor:pointer;
-  background:white;
-  color:black;
-  padding:6px 10px;
-  border-radius:6px;
-  font-size:12px;
+  margin-left:auto;background:white;color:black;
+  padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;
 }
 
-.player{position:relative;background:black;}
-video{
-  width:100%;
-  max-height:240px;
-  object-fit:contain;
-  transition:transform .3s ease;
-}
-video.rotated{transform:rotate(90deg) scale(1.15);}
-
+.player{background:black;position:relative;}
+video{width:100%;max-height:240px;object-fit:contain;}
 .rotate-btn{
-  position:absolute;
-  bottom:12px;
-  right:12px;
-  background:rgba(0,0,0,.65);
-  color:white;
-  border:none;
-  padding:6px 12px;
-  border-radius:6px;
-  cursor:pointer;
+  position:absolute;bottom:12px;right:12px;
+  background:rgba(0,0,0,.6);color:white;
+  border:none;padding:6px 10px;border-radius:6px;
 }
 
 .progress{height:4px;background:#333;}
 .progress div{height:100%;width:0;background:var(--red);}
 
-.info{padding:10px 14px;}
+.info{padding:10px;}
 .info h2{margin:0;font-size:16px;}
-.info p{margin:4px 0 0;font-size:12px;color:var(--sub);}
+.info p{margin:4px 0;font-size:12px;color:var(--sub);}
 
 .action-bar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 14px;
+  display:flex;justify-content:space-between;
+  padding:10px;align-items:center;
 }
 .actions button{
-  margin-right:6px;
-  background:var(--card);
-  color:var(--text);
-  border:none;
-  padding:6px 10px;
-  border-radius:6px;
-  cursor:pointer;
+  margin-right:6px;padding:6px 10px;border:none;
+  border-radius:6px;background:var(--card);
 }
 .subscribe{
-  background:#cc0000;
-  color:white;
-  border:none;
-  padding:6px 14px;
-  border-radius:6px;
-  cursor:pointer;
+  background:#cc0000;color:white;border:none;
+  padding:6px 14px;border-radius:6px;
 }
 
-/* ===== PLAYLIST ===== */
 .list{padding:10px;}
 .item{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-  background:var(--card);
-  padding:8px;
-  border-radius:10px;
-  cursor:pointer;
+  display:flex;gap:10px;margin-bottom:10px;
+  background:var(--card);padding:8px;border-radius:10px;
 }
-.thumb{
-  width:120px;
-  height:70px;
-  background:#000;
-  border-radius:8px;
-  overflow:hidden;
-}
+.thumb{width:120px;height:70px;background:black;border-radius:8px;overflow:hidden;}
 .thumb video{width:100%;height:100%;object-fit:cover;}
-.meta{display:flex;flex-direction:column;}
-.title{font-size:14px;font-weight:bold;}
-.sub{font-size:12px;color:var(--sub);}
 .item.active{outline:2px solid var(--red);}
 
 /* ===== SHORTS ===== */
 .shorts-btn{
-  position:fixed;
-  bottom:18px;
-  right:18px;
-  background:var(--red);
-  color:white;
-  border:none;
-  padding:12px 16px;
-  border-radius:50px;
-  font-size:14px;
-  cursor:pointer;
+  position:fixed;bottom:18px;right:18px;
+  background:var(--red);color:white;
+  border:none;padding:12px 18px;border-radius:30px;
   z-index:20;
 }
 
 .shorts{
-  position:fixed;
-  inset:0;
-  background:black;
-  z-index:30;
-  display:none;
+  position:fixed;inset:0;background:black;
+  display:none;z-index:30;
 }
-
 .shorts.active{display:block;}
 
 .shorts-wrap{
-  height:100%;
-  overflow-y:auto;
+  height:100%;overflow-y:auto;
   scroll-snap-type:y mandatory;
 }
 
 .short{
-  height:100vh;
-  scroll-snap-align:start;
+  height:100vh;scroll-snap-align:start;
   position:relative;
 }
-
 .short video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  width:100%;height:100%;object-fit:cover;
 }
 
 .short-title{
-  position:absolute;
-  bottom:80px;
-  left:14px;
-  color:white;
-  font-size:14px;
+  position:absolute;bottom:90px;left:14px;
+  color:white;font-size:14px;
+}
+
+.short-ui{
+  position:absolute;right:10px;bottom:120px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.short-btn{
+  width:46px;height:46px;border-radius:50%;
+  border:none;background:rgba(0,0,0,.55);
+  color:white;font-size:18px;
+}
+
+.short-progress{
+  position:absolute;right:4px;top:0;
+  width:3px;height:100%;
+  background:rgba(255,255,255,.2);
+}
+.short-progress div{
+  width:100%;height:0;background:white;
 }
 
 .close-shorts{
-  position:absolute;
-  top:12px;
-  right:12px;
-  background:rgba(0,0,0,.6);
-  color:white;
-  border:none;
-  padding:6px 10px;
-  border-radius:6px;
-  cursor:pointer;
+  position:fixed;top:12px;right:12px;
+  background:rgba(0,0,0,.6);color:white;
+  border:none;padding:6px 10px;border-radius:6px;
   z-index:40;
 }
 </style>
@@ -196,8 +136,8 @@ video.rotated{transform:rotate(90deg) scale(1.15);}
 </header>
 
 <div class="player">
-  <video id="mainVideo" controls playsinline></video>
-  <button class="rotate-btn" onclick="safeRotate()">⟳ Full</button>
+  <video id="mainVideo" controls></video>
+  <button class="rotate-btn" onclick="safeRotate()">⟳</button>
 </div>
 <div class="progress"><div id="bar"></div></div>
 
@@ -209,14 +149,12 @@ video.rotated{transform:rotate(90deg) scale(1.15);}
 <div class="action-bar">
   <div class="actions">
     <button onclick="like()">👍 <span id="likeCount">0</span></button>
-    <button onclick="share()">🔗 Share</button>
   </div>
-  <button class="subscribe" onclick="sub()">Subscribe</button>
+  <button class="subscribe">Subscribe</button>
 </div>
 
 <div class="list" id="playlist"></div>
 
-<!-- SHORTS -->
 <button class="shorts-btn" onclick="openShorts()">▶ Shorts</button>
 
 <div class="shorts" id="shorts">
@@ -225,94 +163,118 @@ video.rotated{transform:rotate(90deg) scale(1.15);}
 </div>
 
 <script>
-/* ===== DATA ===== */
-const data = [
-  {title:"Vid Sange 1",src:"https://files.catbox.moe/fx9id6.mp4"},
-  {title:"Vid Sange 2",src:"https://files.catbox.moe/kgu284.mp4"},
-  {title:"Vid Sange 3",src:"https://files.catbox.moe/pfzrgw.mp4"},
-  {title:"Vid Sange 4",src:"https://files.catbox.moe/7ir3vi.mp4"},
-  {title:"Vid Sange 5",src:"https://files.catbox.moe/8y82rp.mp4"}
+/* ===== VIDEO BIASA ===== */
+const data=[
+ {title:"Video 1",src:"https://files.catbox.moe/fx9id6.mp4"},
+ {title:"Video 2",src:"https://files.catbox.moe/kgu284.mp4"},
+ {title:"Video 3",src:"https://files.catbox.moe/pfzrgw.mp4"}
 ];
 
-const shortsData = [
- "hpb22d","oxqnh2","3m8l97","t84akf","g86bz9","ou0r6z","5f8bar",
- "uw0akp","ozc1w6","sf4ngd","aeegbt","c5zswi","w3c63q",
- "ox5rto","oh7ob1","3x4df1","cg6j3b"
-].map(id=>"https://files.catbox.moe/"+id+".mp4");
-
-/* ===== PLAYER ===== */
-const video = document.getElementById("mainVideo");
-const titleEl = document.getElementById("videoTitle");
-const bar = document.getElementById("bar");
-const list = document.getElementById("playlist");
-let current=0,likes=0,rotated=false;
+const video=document.getElementById("mainVideo");
+const bar=document.getElementById("bar");
+const titleEl=document.getElementById("videoTitle");
+const list=document.getElementById("playlist");
+let cur=0,likes=0;
 
 function loadList(){
-  list.innerHTML="";
-  data.forEach((v,i)=>{
-    const el=document.createElement("div");
-    el.className="item"+(i===current?" active":"");
-    el.innerHTML=`
-      <div class="thumb"><video src="${v.src}" muted></video></div>
-      <div class="meta"><div class="title">${v.title}</div><div class="sub">Recommended</div></div>`;
-    el.onclick=()=>playVideo(i);
-    list.appendChild(el);
-  });
+ list.innerHTML="";
+ data.forEach((v,i)=>{
+  const el=document.createElement("div");
+  el.className="item"+(i===cur?" active":"");
+  el.innerHTML=`<div class="thumb"><video src="${v.src}" muted></video></div><b>${v.title}</b>`;
+  el.onclick=()=>play(i);
+  list.appendChild(el);
+ });
 }
-
-function playVideo(i){
-  current=i;
-  video.src=data[i].src;
-  titleEl.textContent=data[i].title;
-  video.play().catch(()=>{});
-  loadList();
+function play(i){
+ cur=i;video.src=data[i].src;
+ titleEl.textContent=data[i].title;
+ video.play();loadList();
 }
+video.ontimeupdate=()=>bar.style.width=(video.currentTime/video.duration*100)+"%";
+function like(){document.getElementById("likeCount").textContent=++likes;}
+function toggleMode(){document.body.classList.toggle("dark");}
+function safeRotate(){video.requestFullscreen?.();}
 
-video.ontimeupdate=()=>{
-  if(video.duration) bar.style.width=(video.currentTime/video.duration*100)+"%";
-};
-video.onended=()=>{if(current<data.length-1)playVideo(current+1);}
+/* ===== SHORTS FIX TOTAL ===== */
+const shortsData=[
+ "https://files.catbox.moe/hpb22d.mp4",
+ "https://files.catbox.moe/oxqnh2.mp4",
+ "https://files.catbox.moe/3m8l97.mp4",
+ "https://files.catbox.moe/t84akf.mp4",
+ "https://files.catbox.moe/g86bz9.mp4",
+ "https://files.catbox.moe/ou0r6z.mp4",
+ "https://files.catbox.moe/5f8bar.mp4",
+ "https://files.catbox.moe/uw0akp.mp4",
+ "https://files.catbox.moe/ozc1w6.mp4",
+ "https://files.catbox.moe/sf4ngd.mp4",
+ "https://files.catbox.moe/aeegbt.mp4",
+ "https://files.catbox.moe/c5zswi.mp4",
+ "https://files.catbox.moe/w3c63q.mp4",
+ "https://files.catbox.moe/ox5rto.mp4",
+ "https://files.catbox.moe/oh7ob1.mp4",
+ "https://files.catbox.moe/3x4df1.mp4",
+ "https://files.catbox.moe/cg6j3b.mp4"
+];
 
-/* ===== SHORTS ===== */
-const shortsWrap=document.getElementById("shortsWrap");
+const shorts=document.getElementById("shorts");
+const wrap=document.getElementById("shortsWrap");
+let vids=[];
 
 shortsData.forEach((src,i)=>{
-  const s=document.createElement("div");
-  s.className="short";
-  s.innerHTML=`
-    <video src="${src}" playsinline loop muted></video>
-    <div class="short-title">Short ${i+1}</div>`;
-  shortsWrap.appendChild(s);
+ const s=document.createElement("div");
+ s.className="short";
+ s.innerHTML=`
+ <video src="${src}" muted playsinline preload="metadata"></video>
+ <div class="short-progress"><div></div></div>
+ <div class="short-ui">
+  <button class="short-btn like">❤️</button>
+  <button class="short-btn sound">🔇</button>
+ </div>
+ <div class="short-title">Short ${i+1}</div>`;
+ wrap.appendChild(s);
 });
 
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    const v=e.target.querySelector("video");
-    e.isIntersecting ? v.play().catch(()=>{}) : v.pause();
-  });
-},{threshold:0.7});
+vids=[...wrap.querySelectorAll("video")];
 
-document.querySelectorAll(".short").forEach(s=>observer.observe(s));
+function playShort(i){
+ vids.forEach((v,x)=>{
+  const bar=v.parentElement.querySelector(".short-progress div");
+  if(x===i){
+   v.play();
+   v.ontimeupdate=()=>bar.style.height=(v.currentTime/v.duration*100)+"%";
+   v.onended=()=>wrap.scrollTo({top:(i+1)*innerHeight,behavior:"smooth"});
+  }else{
+   v.pause();v.currentTime=0;bar.style.height="0";
+  }
+ });
+}
+
+wrap.addEventListener("scroll",()=>{
+ clearTimeout(wrap.t);
+ wrap.t=setTimeout(()=>{
+  playShort(Math.round(wrap.scrollTop/innerHeight));
+ },80);
+});
+
+vids.forEach(v=>{
+ v.onclick=()=>{
+  v.muted=!v.muted;
+  v.parentElement.querySelector(".sound").textContent=v.muted?"🔇":"🔊";
+ };
+});
 
 function openShorts(){
-  document.getElementById("shorts").classList.add("active");
+ shorts.classList.add("active");
+ wrap.scrollTop=0;
+ setTimeout(()=>playShort(0),200);
 }
 function closeShorts(){
-  document.getElementById("shorts").classList.remove("active");
+ shorts.classList.remove("active");
+ vids.forEach(v=>{v.pause();v.currentTime=0;});
 }
 
-/* ===== UI ===== */
-function toggleMode(){document.body.classList.toggle("dark");}
-function like(){document.getElementById("likeCount").textContent=++likes;}
-function share(){navigator.clipboard?.writeText(location.href);alert("Link copied");}
-function sub(){alert("Subscribed 🔔");}
-function safeRotate(){
-  video.requestFullscreen?.().catch(()=>video.classList.toggle("rotated"));
-}
-
-/* INIT */
-playVideo(0);
+play(0);
 </script>
-
 </body>
 </html>
