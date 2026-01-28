@@ -20,17 +20,52 @@ body.dark{
   --sub:#aaaaaa;
 }
 
-body{margin:0;font-family:Arial, Helvetica, sans-serif;background:var(--bg);color:var(--text);}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--red);color:white;}
+header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  background:var(--red);
+  color:white;
+}
 header h1{font-size:18px;margin:0;}
-.toggle{margin-left:auto;cursor:pointer;background:white;color:black;padding:6px 10px;border-radius:6px;font-size:12px;}
+.toggle{
+  margin-left:auto;
+  cursor:pointer;
+  background:white;
+  color:black;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:12px;
+}
 
 .player{position:relative;background:black;}
-video{width:100%;max-height:240px;object-fit:contain;transition:transform .3s ease;}
+video{
+  width:100%;
+  max-height:240px;
+  object-fit:contain;
+  transition:transform .3s ease;
+}
 video.rotated{transform:rotate(90deg) scale(1.15);}
 
-.rotate-btn{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.65);color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;}
+.rotate-btn{
+  position:absolute;
+  bottom:12px;
+  right:12px;
+  background:rgba(0,0,0,.65);
+  color:white;
+  border:none;
+  padding:6px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
 
 .progress{height:4px;background:#333;}
 .progress div{height:100%;width:0;background:var(--red);}
@@ -39,18 +74,117 @@ video.rotated{transform:rotate(90deg) scale(1.15);}
 .info h2{margin:0;font-size:16px;}
 .info p{margin:4px 0 0;font-size:12px;color:var(--sub);}
 
-.action-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;}
-.actions button{margin-right:6px;background:var(--card);color:var(--text);border:none;padding:6px 10px;border-radius:6px;cursor:pointer;}
-.subscribe{background:#cc0000;color:white;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;}
+.action-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 14px;
+}
+.actions button{
+  margin-right:6px;
+  background:var(--card);
+  color:var(--text);
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+.subscribe{
+  background:#cc0000;
+  color:white;
+  border:none;
+  padding:6px 14px;
+  border-radius:6px;
+  cursor:pointer;
+}
 
+/* ===== PLAYLIST ===== */
 .list{padding:10px;}
-.item{display:flex;gap:10px;margin-bottom:10px;background:var(--card);padding:8px;border-radius:10px;cursor:pointer;}
-.thumb{width:120px;height:70px;background:#000;flex-shrink:0;border-radius:8px;overflow:hidden;}
+.item{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+  background:var(--card);
+  padding:8px;
+  border-radius:10px;
+  cursor:pointer;
+}
+.thumb{
+  width:120px;
+  height:70px;
+  background:#000;
+  border-radius:8px;
+  overflow:hidden;
+}
 .thumb video{width:100%;height:100%;object-fit:cover;}
 .meta{display:flex;flex-direction:column;}
 .title{font-size:14px;font-weight:bold;}
 .sub{font-size:12px;color:var(--sub);}
 .item.active{outline:2px solid var(--red);}
+
+/* ===== SHORTS ===== */
+.shorts-btn{
+  position:fixed;
+  bottom:18px;
+  right:18px;
+  background:var(--red);
+  color:white;
+  border:none;
+  padding:12px 16px;
+  border-radius:50px;
+  font-size:14px;
+  cursor:pointer;
+  z-index:20;
+}
+
+.shorts{
+  position:fixed;
+  inset:0;
+  background:black;
+  z-index:30;
+  display:none;
+}
+
+.shorts.active{display:block;}
+
+.shorts-wrap{
+  height:100%;
+  overflow-y:auto;
+  scroll-snap-type:y mandatory;
+}
+
+.short{
+  height:100vh;
+  scroll-snap-align:start;
+  position:relative;
+}
+
+.short video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.short-title{
+  position:absolute;
+  bottom:80px;
+  left:14px;
+  color:white;
+  font-size:14px;
+}
+
+.close-shorts{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:rgba(0,0,0,.6);
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  z-index:40;
+}
 </style>
 </head>
 
@@ -82,83 +216,101 @@ video.rotated{transform:rotate(90deg) scale(1.15);}
 
 <div class="list" id="playlist"></div>
 
+<!-- SHORTS -->
+<button class="shorts-btn" onclick="openShorts()">▶ Shorts</button>
+
+<div class="shorts" id="shorts">
+  <button class="close-shorts" onclick="closeShorts()">✕</button>
+  <div class="shorts-wrap" id="shortsWrap"></div>
+</div>
+
 <script>
-// ---------- DATA ----------
+/* ===== DATA ===== */
 const data = [
   {title:"Vid Sange 1",src:"https://files.catbox.moe/fx9id6.mp4"},
   {title:"Vid Sange 2",src:"https://files.catbox.moe/kgu284.mp4"},
   {title:"Vid Sange 3",src:"https://files.catbox.moe/pfzrgw.mp4"},
   {title:"Vid Sange 4",src:"https://files.catbox.moe/7ir3vi.mp4"},
-  {title:"Vid Sange 5",src:"https://files.catbox.moe/8y82rp.mp4"},
-  {title:"Vid Sange 6",src:"https://jumpshare.com/s/dXODKl1UnlyVxmOFqiwl"}
+  {title:"Vid Sange 5",src:"https://files.catbox.moe/8y82rp.mp4"}
 ];
 
-// ---------- STATE ----------
+const shortsData = [
+ "hpb22d","oxqnh2","3m8l97","t84akf","g86bz9","ou0r6z","5f8bar",
+ "uw0akp","ozc1w6","sf4ngd","aeegbt","c5zswi","w3c63q",
+ "ox5rto","oh7ob1","3x4df1","cg6j3b"
+].map(id=>"https://files.catbox.moe/"+id+".mp4");
+
+/* ===== PLAYER ===== */
 const video = document.getElementById("mainVideo");
 const titleEl = document.getElementById("videoTitle");
 const bar = document.getElementById("bar");
 const list = document.getElementById("playlist");
-let current = 0, likes = 0, rotated = false;
+let current=0,likes=0,rotated=false;
 
-// ---------- UI ----------
 function loadList(){
-  list.innerHTML = "";
+  list.innerHTML="";
   data.forEach((v,i)=>{
-    const el = document.createElement("div");
-    el.className = "item" + (i===current?" active":"");
-    el.innerHTML = `
-      <div class="thumb">
-        <video src="${v.src}" muted preload="metadata"></video>
-      </div>
-      <div class="meta">
-        <div class="title">${v.title}</div>
-        <div class="sub">Recommended</div>
-      </div>
-    `;
-    el.onclick = ()=>playVideo(i);
+    const el=document.createElement("div");
+    el.className="item"+(i===current?" active":"");
+    el.innerHTML=`
+      <div class="thumb"><video src="${v.src}" muted></video></div>
+      <div class="meta"><div class="title">${v.title}</div><div class="sub">Recommended</div></div>`;
+    el.onclick=()=>playVideo(i);
     list.appendChild(el);
   });
 }
 
 function playVideo(i){
-  current = i;
-  video.src = data[i].src;
-  titleEl.textContent = data[i].title;
+  current=i;
+  video.src=data[i].src;
+  titleEl.textContent=data[i].title;
   video.play().catch(()=>{});
   loadList();
 }
 
-video.ontimeupdate = ()=>{
-  if(video.duration){
-    bar.style.width = (video.currentTime / video.duration * 100) + "%";
-  }
+video.ontimeupdate=()=>{
+  if(video.duration) bar.style.width=(video.currentTime/video.duration*100)+"%";
 };
+video.onended=()=>{if(current<data.length-1)playVideo(current+1);}
 
-video.onended = ()=>{
-  if(current < data.length-1) playVideo(current+1);
-};
+/* ===== SHORTS ===== */
+const shortsWrap=document.getElementById("shortsWrap");
 
-// ---------- FULL / ROTATE ----------
-function safeRotate(){
-  if(video.requestFullscreen){
-    video.requestFullscreen().catch(()=>fallbackRotate());
-  }else{
-    fallbackRotate();
-  }
+shortsData.forEach((src,i)=>{
+  const s=document.createElement("div");
+  s.className="short";
+  s.innerHTML=`
+    <video src="${src}" playsinline loop muted></video>
+    <div class="short-title">Short ${i+1}</div>`;
+  shortsWrap.appendChild(s);
+});
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    const v=e.target.querySelector("video");
+    e.isIntersecting ? v.play().catch(()=>{}) : v.pause();
+  });
+},{threshold:0.7});
+
+document.querySelectorAll(".short").forEach(s=>observer.observe(s));
+
+function openShorts(){
+  document.getElementById("shorts").classList.add("active");
+}
+function closeShorts(){
+  document.getElementById("shorts").classList.remove("active");
 }
 
-function fallbackRotate(){
-  rotated = !rotated;
-  video.classList.toggle("rotated", rotated);
-}
-
-// ---------- ACTIONS ----------
+/* ===== UI ===== */
 function toggleMode(){document.body.classList.toggle("dark");}
-function like(){document.getElementById("likeCount").textContent = ++likes;}
+function like(){document.getElementById("likeCount").textContent=++likes;}
 function share(){navigator.clipboard?.writeText(location.href);alert("Link copied");}
 function sub(){alert("Subscribed 🔔");}
+function safeRotate(){
+  video.requestFullscreen?.().catch(()=>video.classList.toggle("rotated"));
+}
 
-// ---------- INIT ----------
+/* INIT */
 playVideo(0);
 </script>
 
